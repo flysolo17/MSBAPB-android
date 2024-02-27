@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:foregroundTint="@color/white"
+            app:titleTextColor="@color/white"
+            app:subtitleTextColor="@color/white"
+            />
+    </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    </LinearLayout>
+    <include layout="@layout/content_main" />
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:layout_width="match_parent"
+        android:id="@+id/bottomAppbar"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/primary"
+
+        android:layout_gravity="bottom">
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottomNavigation"
+            android:background="@android:color/transparent"
+            app:menu="@menu/menu_bottom_nav"
+            app:itemTextColor="@color/white"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:itemIconTint="@color/white"
+            app:labelVisibilityMode="labeled"/>
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/bottom_map">
+
+    <fragment
+        android:id="@+id/menu_profile"
+        android:name="com.danica.msbapb.views.nav.profile.ProfileFragment"
+        android:label="My Profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/menu_incident"
+        android:name="com.danica.msbapb.views.nav.report.ReportFragment"
+        android:label="Incident Report"
+        tools:layout="@layout/fragment_report" >
+        <action
+            android:id="@+id/action_menu_incident_to_createReportFragment"
+            app:destination="@id/createReportFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/menu_about"
+        android:name="com.danica.msbapb.views.nav.about.AboutUsFragment"
+        android:label="About us"
+        tools:layout="@layout/fragment_about_us" />
+    <fragment
+        android:id="@+id/bottom_map"
+        android:name="com.danica.msbapb.views.bottom.map.MapFragment"
+        android:label="Map"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/bottom_library"
+        android:name="com.danica.msbapb.views.bottom.library.LibraryFragment"
+        android:label="Library"
+        tools:layout="@layout/fragment_library" />
+    <fragment
+        android:id="@+id/bottom_news"
+        android:name="com.danica.msbapb.views.bottom.news.NewsFragment"
+        android:label="News"
+        tools:layout="@layout/fragment_news" />
+    <dialog
+        android:id="@+id/bottom_logout"
+        android:name="com.danica.msbapb.views.bottom.LogoutFragment"
+        android:label="Logout"
+        tools:layout="@layout/fragment_logout" />
+    <fragment
+        android:id="@+id/createReportFragment"
+        android:name="com.danica.msbapb.views.nav.report.CreateReportFragment"
+        android:label="Report Form"
+        tools:layout="@layout/fragment_create_report" />
+
+
+</navigation>

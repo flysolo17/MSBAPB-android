@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".views.nav.report.ReportFragment">
+    <include layout="@layout/loading_screen"
+        android:id="@+id/loadingScreen"
+        android:visibility="gone"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerviewReports"/>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Report an incident"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:id="@+id/buttonCreateReport"
+        app:icon="@drawable/baseline_add_chart_24"
+        />
+</FrameLayout>

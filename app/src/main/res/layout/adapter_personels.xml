@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="@color/primary"
+    style="@style/Widget.Material3.CardView.Elevated">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:scaleType="fitXY"
+            android:id="@+id/imagePersonel"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/juan_dela_cruz"
+                    android:layout_weight="1"
+                    android:id="@+id/textPersonelName"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    />
+
+                <View
+                    android:id="@+id/textStatus"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="@drawable/personel_status"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textContact"
+                android:textColor="@color/white"
+                android:text="09776989525"/>
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

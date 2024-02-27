@@ -1,0 +1,18 @@
+<com.google.android.material.carousel.MaskableFrameLayout android:id="@+id/carousel_item_container"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    app:shapeAppearance="?attr/shapeAppearanceCornerSmall"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
+    android:foreground="?attr/selectableItemBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/list_item_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:transitionName="image"
+        android:scaleType="fitXY"/>
+
+</com.google.android.material.carousel.MaskableFrameLayout>

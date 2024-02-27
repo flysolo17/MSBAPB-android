@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.imageview.ShapeableImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:scaleType="fitXY"
+    android:layout_margin="4dp"
+    app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
+    android:layout_height="100dp"
+    android:src="@drawable/action1"
+    android:id="@+id/imageGallery">
+
+</com.google.android.material.imageview.ShapeableImageView>
