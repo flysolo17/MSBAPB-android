@@ -19,9 +19,9 @@ class IncidentReportViewModel @Inject constructor(val incidentReportRepository: 
     private val _incidents = MutableLiveData<UiState<List<IncidentReport>>>()
     val incidents : LiveData<UiState<List<IncidentReport>>> get() = _incidents
 
-    fun getAllIncidents() {
+    fun getAllIncidents(uid : Int) {
         viewModelScope.launch {
-            incidentReportRepository.getAllMyReports(23) {
+            incidentReportRepository.getAllMyReports(uid) {
                 _incidents.postValue(it)
             }
         }

@@ -7,6 +7,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface NewsService {
-    @GET("news/get_all_news.php")
+    @GET("api/news/get_all_news.php")
     fun getAllNews(): Call<ResponseData<List<News>>>
 }

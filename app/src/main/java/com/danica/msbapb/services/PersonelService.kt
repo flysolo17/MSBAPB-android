@@ -10,6 +10,6 @@ import retrofit2.http.POST
 
 interface PersonelService {
 
-    @GET("auth/personels/get_all_personels.php")
+    @GET("api/auth/personels/get_all_personels.php")
     fun getAllPersonels(): Call<List<Personels>>
 }

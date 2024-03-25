@@ -5,6 +5,8 @@ import com.danica.msbapb.data.ResponseData
 import com.danica.msbapb.models.IncidentReport
 import com.danica.msbapb.services.IncidentReportService
 import com.danica.msbapb.utils.UiState
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Field
@@ -26,7 +28,18 @@ class IncidentReportRepositoryImpl(private val reportService: IncidentReportServ
                         result.invoke(UiState.SUCCESS(it))
                     }
                 } else {
-                    result.invoke(UiState.FAILED(response.errorBody().toString()))
+                    val errorBodyString = response.errorBody()?.string()
+                    errorBodyString?.let {
+                        try {
+                            val errorJson = JSONObject(it)
+                            val errorMessage = errorJson.getString("message")
+                            result.invoke(UiState.FAILED(errorMessage))
+                        } catch (e: JSONException) {
+                            result.invoke(UiState.FAILED("Error parsing error message"))
+                        }
+                    } ?: run {
+                        result.invoke(UiState.FAILED("Unknown error"))
+                    }
                 }
             }
             override fun onFailure(call: Call<ResponseData<Any>>, t: Throwable) {
@@ -37,7 +50,7 @@ class IncidentReportRepositoryImpl(private val reportService: IncidentReportServ
 
     override suspend fun getAllMyReports(uid: Int, result: (UiState<List<IncidentReport>>) -> Unit) {
         result.invoke(UiState.LOADING)
-        reportService.getAllIncidents().enqueue(object  : Callback,
+        reportService.getAllIncidents(uid).enqueue(object  : Callback,
             retrofit2.Callback<List<IncidentReport>> {
             override fun onResponse(
                 call: Call<List<IncidentReport>>,
@@ -49,7 +62,18 @@ class IncidentReportRepositoryImpl(private val reportService: IncidentReportServ
                     result.invoke(UiState.SUCCESS(data))
 
                 } else {
-                    result.invoke(UiState.FAILED(response.errorBody().toString()))
+                    val errorBodyString = response.errorBody()?.string()
+                    errorBodyString?.let {
+                        try {
+                            val errorJson = JSONObject(it)
+                            val errorMessage = errorJson.getString("message")
+                            result.invoke(UiState.FAILED(errorMessage))
+                        } catch (e: JSONException) {
+                            result.invoke(UiState.FAILED("Error parsing error message"))
+                        }
+                    } ?: run {
+                        result.invoke(UiState.FAILED("Unknown error"))
+                    }
                 }
             }
             override fun onFailure(call: Call<List<IncidentReport>>, t: Throwable) {

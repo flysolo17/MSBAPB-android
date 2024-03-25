@@ -4,4 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="user_key">uid</string>
     <string name="juan_dela_cruz">Juan Dela Cruz</string>
+    <string name="enter_fullname">Enter fullname</string>
+    <string name="enter_address">Enter Address</string>
+    <string name="enter_phone_number">Enter Phone number</string>
 </resources>

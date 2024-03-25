@@ -10,6 +10,6 @@ import retrofit2.http.POST
 
 interface LocationService {
 
-    @GET("admin/get_all_locations.php")
-    fun getAllLocations(): Call<ResponseData<List<Locations>>>
+    @GET("api/admin/get_all_locations.php")
+     fun getAllLocations(): Call<ResponseData<List<Locations>>>
 }

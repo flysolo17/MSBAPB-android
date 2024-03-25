@@ -105,12 +105,11 @@ class MainActivity : AppCompatActivity() {
         authViewModel.users.observe(this) {
             when(it) {
                 is UiState.FAILED -> Toast.makeText(this,it.message,Toast.LENGTH_LONG).show()
-                is UiState.LOADING -> Toast.makeText(this,"Getting user",Toast.LENGTH_SHORT).show()
+                is UiState.LOADING -> {}
                 is UiState.SUCCESS -> {
                     val toolbar = binding.appBarMain.toolbar
                     setSupportActionBar(toolbar)
                     setUpNav()
-
                 }
             }
         }
@@ -151,8 +150,6 @@ class MainActivity : AppCompatActivity() {
                     showBottomNav()
                     invalidateOptionsMenu()
                 }
-
-
                 else -> {
                     hideBottomNav()
                     invalidateOptionsMenu()

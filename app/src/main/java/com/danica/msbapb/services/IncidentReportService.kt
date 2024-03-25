@@ -7,10 +7,11 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface IncidentReportService {
     @FormUrlEncoded
-    @POST("reports/create.php")
+    @POST("api/reports/create.php")
     fun createIncidentReport(
         @Field("reporter_id") reporterId: Int,
         @Field("location") location: String,
@@ -20,6 +21,6 @@ interface IncidentReportService {
         @Field("severity") severity : Int
     ): Call<ResponseData<Any>>
 
-    @GET("reports/incidents.php")
-    fun getAllIncidents() :Call<List<IncidentReport>>
+    @GET("api/reports/get_incidents_by_uid.php")
+    fun getAllIncidents(@Query("uid") uid: Int): Call<List<IncidentReport>>
 }

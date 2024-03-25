@@ -19,6 +19,7 @@ class LocationViewModels @Inject constructor(private  val  locationRepository: L
 
     private val _locations = MutableLiveData<UiState<ResponseData<List<Locations>>>>()
     val locations : LiveData<UiState<ResponseData<List<Locations>>>> get() = _locations
+     val fullname = MutableLiveData<String>("jm")
 
     fun getAllLocations() {
         viewModelScope.launch {

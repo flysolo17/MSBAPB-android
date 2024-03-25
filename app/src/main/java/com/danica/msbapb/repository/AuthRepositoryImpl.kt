@@ -15,6 +15,8 @@ import com.danica.msbapb.utils.UiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 import java.io.IOException
@@ -25,9 +27,13 @@ private val Context.dataStore by preferencesDataStore(
     name = "user_key"
 )
 const val TAG = "AuthRepository"
+
+
 class AuthRepositoryImpl(context: Context, private val  authService: AuthService) : AuthRepository {
     private val dataStore = context.dataStore
     private val USER_KEY = intPreferencesKey(context.getString(R.string.user_key))
+
+
     override fun login(
         username: String,
         passwod: String,
@@ -48,19 +54,31 @@ class AuthRepositoryImpl(context: Context, private val  authService: AuthService
                     data?.let {
                         result.invoke(UiState.SUCCESS(it))
                         return@let
+                    } ?: run {
+                        result.invoke(UiState.FAILED(response.message()))
                     }
+                    Log.d(TAG,"If")
 
-                    result.invoke(UiState.FAILED(response.message()))
                 } else {
-                    result.invoke(UiState.FAILED(response.errorBody().toString()))
+                    Log.d(TAG,"else")
+                    val errorBodyString = response.errorBody()?.string()
+                    errorBodyString?.let {
+                        try {
+                            val errorJson = JSONObject(it)
+                            val errorMessage = errorJson.getString("message")
+                            result.invoke(UiState.FAILED(errorMessage))
+                        } catch (e: JSONException) {
+                            result.invoke(UiState.FAILED("Error parsing error message"))
+                        }
+                    } ?: run {
+                        result.invoke(UiState.FAILED("Unknown error"))
+                    }
                 }
             }
-
             override fun onFailure(call: Call<ResponseData<Int>>, t: Throwable) {
                 result.invoke(UiState.FAILED(t.message.toString()))
                 Log.d(TAG,t.toString(),t)
             }
-
         })
     }
     override suspend fun saveUID(uid : Int) {
@@ -94,17 +112,32 @@ class AuthRepositoryImpl(context: Context, private val  authService: AuthService
                 call: Call<ResponseData<User>>,
                 response: Response<ResponseData<User>>
             ) {
+                Log.d(TAG,response.body().toString())
                 if (response.isSuccessful) {
                     val data : ResponseData<User> ?= response.body()
-                    Log.d(TAG,data.toString())
                     data?.let {
                         result.invoke(UiState.SUCCESS(it.data))
-                        return@let
+
+                    } ?: run {
+                        result.invoke(UiState.FAILED(response.message()))
                     }
-                    result.invoke(UiState.FAILED(response.message()))
+                    Log.d(TAG,"if : " )
                 } else {
-                    Log.d(TAG,response.errorBody().toString())
-                    result.invoke(UiState.FAILED(response.errorBody().toString()))
+                    val errorBodyString = response.errorBody()?.string()
+                    Log.d(TAG,"ELSE : ${errorBodyString}" )
+
+                    errorBodyString?.let {
+                        try {
+                            val errorJson = JSONObject(it)
+                            val errorMessage = errorJson.getString("message")
+                            Log.d(TAG,errorMessage)
+                            result.invoke(UiState.FAILED(errorMessage))
+                        } catch (e: JSONException) {
+                            result.invoke(UiState.FAILED("Error parsing error message"))
+                        }
+                    } ?: run {
+                        result.invoke(UiState.FAILED("Unknown error"))
+                    }
                 }
             }
 
@@ -113,6 +146,145 @@ class AuthRepositoryImpl(context: Context, private val  authService: AuthService
                 Log.d(TAG,t.toString(),t)
             }
 
+        })
+    }
+
+    override fun signUp(
+        fullname: String,
+        address: String,
+        phone: String,
+        email: String,
+        passwod: String,
+        result: (UiState<ResponseData<Int>>) -> Unit
+    ) {
+        result.invoke(UiState.LOADING)
+        authService.createUser(fullname,address,phone,email,passwod).enqueue(object  : Callback,
+            retrofit2.Callback<ResponseData<Int>> {
+            override fun onResponse(
+                call: Call<ResponseData<Int>>,
+                response: Response<ResponseData<Int>>
+            ) {
+                Log.d(TAG,response.body().toString())
+                if (response.isSuccessful) {
+                    val data : ResponseData<Int> ?= response.body()
+                    Log.d(TAG,data.toString())
+                    data?.let {
+                        result.invoke(UiState.SUCCESS(it))
+                        return@let
+                    }
+                    result.invoke(UiState.FAILED(response.message()))
+                } else {
+                    val errorBodyString = response.errorBody()?.string()
+                    errorBodyString?.let {
+                        try {
+                            val errorJson = JSONObject(it)
+                            val errorMessage = errorJson.getString("message")
+                            result.invoke(UiState.FAILED(errorMessage))
+                        } catch (e: JSONException) {
+                            result.invoke(UiState.FAILED("Error parsing error message"))
+                        }
+                    } ?: run {
+                        result.invoke(UiState.FAILED("Unknown error"))
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData<Int>>, t: Throwable) {
+                result.invoke(UiState.FAILED(t.message.toString()))
+                Log.d(TAG,t.toString(),t)
+            }
+        })
+    }
+
+    override fun editProfile(
+        uid: Int,
+        name: String,
+        address: String,
+        phone: String,
+        result: (UiState<ResponseData<Any>>) -> Unit
+    ) {
+        result.invoke(UiState.LOADING)
+        authService.updateProfile(uid,name, address, phone).enqueue(object  :  Callback,
+            retrofit2.Callback<ResponseData<Any>> {
+            override fun onResponse(
+                call: Call<ResponseData<Any>>,
+                response: Response<ResponseData<Any>>
+            ) {
+                Log.d(TAG,response.body().toString())
+                if (response.isSuccessful) {
+                    val data : ResponseData<Any> ?= response.body()
+                    Log.d(TAG,data.toString())
+                    data?.let {
+                        result.invoke(UiState.SUCCESS(it))
+                        return@let
+                    }
+                    result.invoke(UiState.FAILED(response.message()))
+                } else {
+                    val errorBodyString = response.errorBody()?.string()
+                    errorBodyString?.let {
+                        try {
+                            val errorJson = JSONObject(it)
+                            val errorMessage = errorJson.getString("message")
+                            result.invoke(UiState.FAILED(errorMessage))
+                        } catch (e: JSONException) {
+                            result.invoke(UiState.FAILED("Error parsing error message"))
+                        }
+                    } ?: run {
+                        result.invoke(UiState.FAILED("Unknown error"))
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData<Any>>, t: Throwable) {
+                result.invoke(UiState.FAILED(t.message.toString()))
+                Log.d(TAG,t.toString(),t)
+            }
+        })
+    }
+
+    override fun changePassword(
+        uid: Int,
+        default: String,
+        new: String,
+        confirm: String,
+        result: (UiState<ResponseData<Any>>) -> Unit
+    ) {
+        result.invoke(UiState.LOADING)
+        authService.changePassword(uid,default, new, confirm).enqueue(object  :  Callback,
+            retrofit2.Callback<ResponseData<Any>> {
+            override fun onResponse(
+                call: Call<ResponseData<Any>>,
+                response: Response<ResponseData<Any>>
+            ) {
+                Log.d(TAG,response.body().toString())
+                if (response.isSuccessful) {
+                    val data : ResponseData<Any> ?= response.body()
+                    Log.d(TAG,data.toString())
+                    data?.let {
+                        result.invoke(UiState.SUCCESS(it))
+                        return@let
+                    }
+                    result.invoke(UiState.FAILED(response.message()))
+                } else {
+                    val errorBodyString = response.errorBody()?.string()
+                    errorBodyString?.let {
+                        try {
+                            val errorJson = JSONObject(it)
+                            val errorMessage = errorJson.getString("message")
+                            result.invoke(UiState.FAILED(errorMessage))
+                        } catch (e: JSONException) {
+                            result.invoke(UiState.FAILED("Error parsing error message"))
+                        }
+                    } ?: run {
+                        result.invoke(UiState.FAILED("Unknown error"))
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData<Any>>, t: Throwable) {
+                result.invoke(UiState.FAILED(t.message.toString()))
+                Log.d(TAG,t.toString(),t)
+            }
         })
     }
 

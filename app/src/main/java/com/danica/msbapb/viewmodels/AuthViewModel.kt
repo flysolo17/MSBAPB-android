@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.danica.msbapb.models.User
 
 import com.danica.msbapb.repository.AuthRepository
+import com.danica.msbapb.repository.authentication.AuthenticationRepository
 import com.danica.msbapb.utils.UiState
 
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +27,7 @@ import javax.inject.Inject
 
 const val UID = "uid"
 @HiltViewModel
-class AuthViewModel @Inject constructor(val authRepository: AuthRepository): ViewModel() {
+class AuthViewModel @Inject constructor(val authRepository: AuthRepository,val authenticationRepository: AuthenticationRepository): ViewModel() {
 
     private var _users = MutableLiveData<UiState<User>>()
     val users: LiveData<UiState<User>>

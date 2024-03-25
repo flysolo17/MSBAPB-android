@@ -5,6 +5,7 @@ import android.content.Context
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.LocationManager
 import android.net.Uri
 
@@ -42,6 +43,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.StyleSpan
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.maps.android.ktx.awaitMap
 import com.google.maps.android.ktx.awaitMapLoad
@@ -57,7 +60,6 @@ import java.lang.Math.sqrt
 class MapFragment : Fragment() ,LocationAdapterClickListener{
 
     private lateinit var _binding : FragmentMapBinding
-
     private val binalonan = LatLng(  16.05030000   , 120.59260000 )
     private val _locationViewModel by activityViewModels<LocationViewModels>()
     private lateinit var _mapFragment : SupportMapFragment
@@ -84,6 +86,7 @@ class MapFragment : Fragment() ,LocationAdapterClickListener{
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMapBinding.inflate(inflater,container,false)
+
         return _binding.root
     }
 
@@ -96,6 +99,8 @@ class MapFragment : Fragment() ,LocationAdapterClickListener{
             adapter = _locationsAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+
+
 
         observers()
          _mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -163,6 +168,8 @@ class MapFragment : Fragment() ,LocationAdapterClickListener{
             return
         }
     }
+
+
     private fun observers() {
         _locationViewModel.locations.observe(viewLifecycleOwner) {
             if (it is UiState.SUCCESS) {
@@ -177,6 +184,15 @@ class MapFragment : Fragment() ,LocationAdapterClickListener{
                         )
                     }
 
+                    val latLng = LatLng(it.data.data[0].latitude.toDoubleOrNull() ?: 0.00,it.data.data[0].longitude.toDoubleOrNull() ?: 0.00)
+                    googleMap.addPolyline(
+                        PolylineOptions()
+                            .add(binalonan, latLng)
+                            .addSpan(StyleSpan(Color.RED))
+                            .addSpan(StyleSpan(Color.GREEN))
+                    )
+
+
                 }
             }
         }
@@ -185,7 +201,7 @@ class MapFragment : Fragment() ,LocationAdapterClickListener{
 
 
     private fun getDistance(latLng1: LatLng, latLng2: LatLng): Double {
-        val R = 6371 // Radius of the Earth in kilometers
+        val R = 6371
         val latDistance = Math.toRadians(latLng2.latitude - latLng1.latitude)
         val lonDistance = Math.toRadians(latLng2.longitude - latLng1.longitude)
         val a = kotlin.math.sin(latDistance / 2) * kotlin.math.sin(latDistance / 2) +
@@ -198,7 +214,6 @@ class MapFragment : Fragment() ,LocationAdapterClickListener{
         val c = 2 * kotlin.math.atan2(kotlin.math.sqrt(a), kotlin.math.sqrt(1 - a))
         val distance = R * c
 
-        // Format the distance to have only two decimal places
         return "%.2f".format(distance).toDouble()
     }
 

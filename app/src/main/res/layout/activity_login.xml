@@ -20,6 +20,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:id="@+id/inputEmail"
+            android:drawablePadding="10dp"
             android:drawableStart="@drawable/baseline_person_2_24"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
@@ -34,6 +35,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:id="@+id/inputPassword"
+            android:drawablePadding="10dp"
             android:drawableStart="@drawable/twotone_lock_person_24"
             android:layout_height="wrap_content"
             android:inputType="textPassword"

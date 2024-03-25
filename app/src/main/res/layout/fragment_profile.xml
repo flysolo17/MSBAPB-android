@@ -1,13 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".views.nav.profile.ProfileFragment">
 
-    <TextView
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:src="@drawable/profile_bg"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:id="@+id/textName"
+                android:layout_gravity="top|center"
+                android:layout_margin="10dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_medium"
+                android:text="John Doe"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/profile"
+                android:id="@+id/imageProfile"
+                android:layout_gravity="center|bottom"
+                app:shapeAppearance="@style/CornerCut"/>
+        </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:backgroundTint="@color/primary"
+                android:background="@drawable/baseline_person_2_24"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textFullname"
+                android:layout_marginHorizontal="10dp"
+                android:text="John Doe"
+                android:textSize="16sp"/>
+        </LinearLayout>
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:backgroundTint="@color/primary"
+                android:background="@drawable/location"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textAddress"
+                android:layout_marginHorizontal="10dp"
+                android:text="binalonan Pangasinan"
+                android:textSize="16sp"/>
+        </LinearLayout>
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:backgroundTint="@color/primary"
+                android:background="@drawable/common_full_open_on_phone"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:id="@+id/textPhone"
+                android:text="09665326589"
+                android:textSize="16sp"/>
+        </LinearLayout>
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:backgroundTint="@color/primary"
+                android:background="@drawable/baseline_mark_email_read_24"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:id="@+id/textEmail"
+                android:text="johndoe@gmail.com"
+                android:textSize="16sp"/>
+        </LinearLayout>
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="This is Profile" />
-</FrameLayout>
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:padding="10dp">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/baseline_arrow_back_ios_24"
+            app:cornerRadius="5dp"
+            android:id="@+id/buttonEditProfile"
+            android:paddingVertical="10dp"
+            android:text="Edit Profile"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cornerRadius="5dp"
+            android:id="@+id/buttonChangePassword"
+            app:icon="@drawable/baseline_arrow_back_ios_24"
+            android:paddingVertical="10dp"
+            android:text="Change Password"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cornerRadius="5dp"
+            android:id="@+id/buttonPrivacy"
+            app:icon="@drawable/baseline_arrow_back_ios_24"
+            android:paddingVertical="10dp"
+            android:text="Privacy Policy"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonTerms"
+            app:cornerRadius="5dp"
+            app:icon="@drawable/baseline_arrow_back_ios_24"
+            android:paddingVertical="10dp"
+            android:text="Terms and Conditions"/>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:text="Logout"
+            app:backgroundTint="#F44336"
+            android:id="@+id/buttonLogout"
+            app:cornerRadius="5dp"
+            app:icon="@drawable/baseline_arrow_back_ios_24" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

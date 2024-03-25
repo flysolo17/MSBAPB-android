@@ -9,7 +9,14 @@
         android:id="@+id/menu_profile"
         android:name="com.danica.msbapb.views.nav.profile.ProfileFragment"
         android:label="My Profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_menu_profile_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_menu_profile_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/menu_incident"
         android:name="com.danica.msbapb.views.nav.report.ReportFragment"
@@ -49,6 +56,24 @@
         android:name="com.danica.msbapb.views.nav.report.CreateReportFragment"
         android:label="Report Form"
         tools:layout="@layout/fragment_create_report" />
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.danica.msbapb.views.nav.profile.ChangePasswordFragment"
+        android:label="Change Password"
+        tools:layout="@layout/fragment_change_password" >
+        <argument
+            android:name="users"
+            app:argType="com.danica.msbapb.models.User" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.danica.msbapb.views.nav.profile.EditProfileFragment"
+        android:label="Edit Profile"
+        tools:layout="@layout/fragment_edit_profile" >
+        <argument
+            android:name="users"
+            app:argType="com.danica.msbapb.models.User" />
+    </fragment>
 
 
 </navigation>

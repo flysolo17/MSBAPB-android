@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.danica.msbapb.R
 import com.danica.msbapb.databinding.FragmentReportBinding
+import com.danica.msbapb.models.User
 import com.danica.msbapb.utils.UiState
 import com.danica.msbapb.viewmodels.AuthViewModel
 import com.danica.msbapb.viewmodels.IncidentReportViewModel
@@ -22,6 +23,7 @@ class ReportFragment : Fragment() {
 
     private lateinit var _binding : FragmentReportBinding
     private val _authViewModel by activityViewModels<AuthViewModel>()
+    private  var _users : User ? = null
     private val _incidentReportViewModel by activityViewModels<IncidentReportViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,11 +35,22 @@ class ReportFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _authViewModel.users.observe(viewLifecycleOwner) {
+            if (it is UiState.SUCCESS) {
+                _users = it.data
+                _users?.let {user->
+                    _incidentReportViewModel.getAllIncidents(user.id)
+                }
+            }
+        }
+
         _binding.buttonCreateReport.setOnClickListener {
             findNavController().navigate(R.id.action_menu_incident_to_createReportFragment)
         }
 
-        _incidentReportViewModel.getAllIncidents()
+
+
+
         observers()
     }
     private fun observers() {

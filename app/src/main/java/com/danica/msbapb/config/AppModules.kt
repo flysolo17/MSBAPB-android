@@ -5,6 +5,8 @@ import com.danica.msbapb.repository.AuthRepository
 import com.danica.msbapb.repository.AuthRepositoryImpl
 import com.danica.msbapb.repository.adminservices.LocationRepository
 import com.danica.msbapb.repository.adminservices.LocationRepositoryImpl
+import com.danica.msbapb.repository.authentication.AuthenticationRepository
+import com.danica.msbapb.repository.authentication.AuthenticationRepositoryImpl
 import com.danica.msbapb.repository.incidents.IncidentReportRepository
 import com.danica.msbapb.repository.incidents.IncidentReportRepositoryImpl
 import com.danica.msbapb.repository.news.NewsRepository
@@ -12,6 +14,7 @@ import com.danica.msbapb.repository.news.NewsRepositoryImpl
 import com.danica.msbapb.repository.perosnels.PersonelRepository
 import com.danica.msbapb.repository.perosnels.PersonelRepositoryImpl
 import com.danica.msbapb.services.AuthService
+import com.danica.msbapb.services.AuthenticationService
 import com.danica.msbapb.services.IncidentReportService
 import com.danica.msbapb.services.LocationService
 import com.danica.msbapb.services.NewsService
@@ -63,5 +66,11 @@ object AppModules {
     @Provides
     fun provideNewsRepository(): NewsRepository {
         return NewsRepositoryImpl(ApiInstance.api.create(NewsService::class.java))
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthenticationRepository(): AuthenticationRepository {
+        return AuthenticationRepositoryImpl(ApiInstance.api.create(AuthenticationService::class.java))
     }
 }

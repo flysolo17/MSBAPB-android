@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiInstance {
-    private const val BASE_URL = "http://192.168.100.18/msbapb/api/"
+    private const val BASE_URL = "https://danica.msbapb.com/"
 
     val api: Retrofit by lazy {
         createRetrofitInstance()
