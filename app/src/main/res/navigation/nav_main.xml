@@ -45,7 +45,11 @@
         android:id="@+id/bottom_news"
         android:name="com.danica.msbapb.views.bottom.news.NewsFragment"
         android:label="News"
-        tools:layout="@layout/fragment_news" />
+        tools:layout="@layout/fragment_news" >
+        <action
+            android:id="@+id/action_bottom_news_to_viewNewsFragment"
+            app:destination="@id/viewNewsFragment" />
+    </fragment>
     <dialog
         android:id="@+id/bottom_logout"
         android:name="com.danica.msbapb.views.bottom.LogoutFragment"
@@ -73,6 +77,15 @@
         <argument
             android:name="users"
             app:argType="com.danica.msbapb.models.User" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewNewsFragment"
+        android:name="com.danica.msbapb.views.bottom.news.ViewNewsFragment"
+        android:label="View News"
+        tools:layout="@layout/fragment_view_news" >
+        <argument
+            android:name="news"
+            app:argType="com.danica.msbapb.models.News" />
     </fragment>
 
 

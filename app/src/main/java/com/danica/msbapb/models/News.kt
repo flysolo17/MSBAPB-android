@@ -1,7 +1,9 @@
 package com.danica.msbapb.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.util.Date
-
+@Parcelize
 data class News(
     val photo: String,
     val title: String,
@@ -9,4 +11,4 @@ data class News(
     val link: String,
     val createdAt: String,
     val type: String
-)
+) : Parcelable

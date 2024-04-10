@@ -18,12 +18,17 @@ import com.danica.msbapb.models.News
 import com.danica.msbapb.models.Personels
 import com.danica.msbapb.utils.STORAGE_LINK
 import com.danica.msbapb.utils.formatDate
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.imageview.ShapeableImageView
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+interface NewsClickListener {
+    fun onNewsClicked(news: News)
+}
 
-class NewsAdapter(private  val context: Context, private  val  news : List<News>): RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+class NewsAdapter(private  val context: Context, private  val  news : List<News>,private val newsClickListener : NewsClickListener): RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
@@ -46,30 +51,28 @@ class NewsAdapter(private  val context: Context, private  val  news : List<News>
             .error(R.drawable.news)
             .into(holder.imageNews)
 
-        holder.itemView.setOnClickListener {
-            openLink(context,new.link)
+        holder.btnReadMore.setOnClickListener {
+            newsClickListener.onNewsClicked(new)
         }
     }
 
 
 
-    private fun openLink(context: Context, link: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-        context.startActivity(intent)
-    }
+
 
     class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var imageNews : ImageView;
+        var imageNews : ShapeableImageView;
         var textTitle : TextView
         var textDescription : TextView
         var textDate : TextView
-
+        var btnReadMore : MaterialButton
         init {
 
             imageNews = itemView.findViewById(R.id.imageNews)
             textTitle = itemView.findViewById(R.id.texttitle)
             textDescription = itemView.findViewById(R.id.textDescription)
             textDate = itemView.findViewById(R.id.textDate)
+            btnReadMore = itemView.findViewById(R.id.btnReadMore)
         }
     }
 }
