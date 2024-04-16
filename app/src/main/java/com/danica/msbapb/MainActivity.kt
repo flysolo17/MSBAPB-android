@@ -47,25 +47,13 @@ class MainActivity : AppCompatActivity() {
     private var locationUpdatesJob: Job? = null
     private var userID : Int? = null
 
-    private val locationPermissionRequest = this.registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        when {
-            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                // Precise location access granted.
-            }
-            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                // Only approximate location access granted.
-            } else -> {
-                checkPermision()
-            }
-        }
-    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        checkPermision()
+
         locationViewModel.getAllLocations()
         locationUpdatesJob =  lifecycleScope.launch {
             authViewModel.authRepository.getUID()
@@ -84,23 +72,7 @@ class MainActivity : AppCompatActivity() {
         observers()
     }
 
-    private fun checkPermision() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
 
-
-            locationPermissionRequest.launch(arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION))
-            return
-        }
-    }
     private fun observers() {
         authViewModel.users.observe(this) {
             when(it) {

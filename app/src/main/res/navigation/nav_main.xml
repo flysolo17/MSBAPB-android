@@ -25,6 +25,10 @@
         <action
             android:id="@+id/action_menu_incident_to_createReportFragment"
             app:destination="@id/createReportFragment" />
+        <action
+            android:id="@+id/action_menu_incident_to_viewReportFragment2"
+            app:destination="@id/viewReportFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/menu_about"
@@ -35,7 +39,11 @@
         android:id="@+id/bottom_map"
         android:name="com.danica.msbapb.views.bottom.map.MapFragment"
         android:label="Map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_bottom_map_to_createReportFragment"
+            app:destination="@id/createReportFragment" />
+    </fragment>
     <fragment
         android:id="@+id/bottom_library"
         android:name="com.danica.msbapb.views.bottom.library.LibraryFragment"
@@ -86,6 +94,15 @@
         <argument
             android:name="news"
             app:argType="com.danica.msbapb.models.News" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewReportFragment"
+        android:name="com.danica.msbapb.views.nav.report.ViewReportFragment"
+        android:label="View Report"
+        tools:layout="@layout/fragment_view_report" >
+        <argument
+            android:name="incident"
+            app:argType="com.danica.msbapb.models.IncidentReport" />
     </fragment>
 
 

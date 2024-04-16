@@ -11,15 +11,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.danica.msbapb.R
 import com.danica.msbapb.databinding.FragmentReportBinding
+import com.danica.msbapb.models.IncidentReport
 import com.danica.msbapb.models.User
 import com.danica.msbapb.utils.UiState
 import com.danica.msbapb.viewmodels.AuthViewModel
 import com.danica.msbapb.viewmodels.IncidentReportViewModel
+import com.danica.msbapb.views.adapters.IncidentClickListener
 import com.danica.msbapb.views.adapters.IncidentReportAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ReportFragment : Fragment() {
+class ReportFragment : Fragment(),IncidentClickListener {
 
     private lateinit var _binding : FragmentReportBinding
     private val _authViewModel by activityViewModels<AuthViewModel>()
@@ -62,7 +64,7 @@ class ReportFragment : Fragment() {
                     progress(false)
                     _binding.recyclerviewReports.apply {
                         layoutManager = LinearLayoutManager(_binding.root.context)
-                        adapter = IncidentReportAdapter(_binding.root.context,it.data.reversed())
+                        adapter = IncidentReportAdapter(_binding.root.context,it.data.reversed(),this@ReportFragment)
                     }
                 }
             }
@@ -77,6 +79,11 @@ class ReportFragment : Fragment() {
             _binding.loadingScreen.loadingScreen.visibility = View.GONE
             _binding.recyclerviewReports.visibility = View.VISIBLE
         }
+    }
+
+    override fun onClick(incidentReport: IncidentReport) {
+        val directions = ReportFragmentDirections.actionMenuIncidentToViewReportFragment2(incidentReport)
+        findNavController().navigate(directions)
     }
 
 }

@@ -14,10 +14,14 @@ import com.danica.msbapb.models.IncidentReport
 
 
 
+interface IncidentClickListener {
+    fun onClick(incidentReport: IncidentReport)
+}
 
 class IncidentReportAdapter(
     private val context: Context,
-    private val incidentReports: List<IncidentReport>
+    private val incidentReports: List<IncidentReport>,
+    private  val incidentClickListener: IncidentClickListener
 ) :
     RecyclerView.Adapter<IncidentReportAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,7 +40,9 @@ class IncidentReportAdapter(
         holder.textSeverity.text = incidentReport.severity
         holder.frameSeverity.setBackgroundColor(setColor(incidentReport.severity,context))
 
-
+        holder.itemView.setOnClickListener {
+            incidentClickListener.onClick(incidentReport)
+        }
     }
 
     override fun getItemCount(): Int {

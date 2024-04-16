@@ -35,7 +35,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textDescription"
-            android:text="description"/>
+            android:justificationMode="inter_word"
+            android:text="description"
+            tools:targetApi="o" />
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"

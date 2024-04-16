@@ -2,23 +2,28 @@ package com.danica.msbapb.services
 
 import com.danica.msbapb.data.ResponseData
 import com.danica.msbapb.models.IncidentReport
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Query
 
 interface IncidentReportService {
-    @FormUrlEncoded
+    @Multipart
     @POST("api/reports/create.php")
     fun createIncidentReport(
-        @Field("reporter_id") reporterId: Int,
-        @Field("location") location: String,
-        @Field("type") type: String,
-        @Field("description") description: String,
-        @Field("status") status: Int = 1,
-        @Field("severity") severity : Int
+        @Part("reporter_id",) reporterId: Int,
+        @Part("location") location: RequestBody,
+        @Part("type") type: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("status") status: Int = 1,
+        @Part("severity") severity: Int,
+        @Part photo: MultipartBody.Part
     ): Call<ResponseData<Any>>
 
     @GET("api/reports/get_incidents_by_uid.php")

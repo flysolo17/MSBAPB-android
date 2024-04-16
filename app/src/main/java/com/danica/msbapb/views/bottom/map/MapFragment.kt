@@ -22,6 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -147,7 +148,9 @@ class MapFragment : Fragment() ,LocationAdapterClickListener{
         val bottomSheet = BottomSheetBehavior.from(_binding.dragableView)
         bottomSheet.setPeekHeight(400,true)
         bottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
-
+        _binding.buttonCreateReport.setOnClickListener {
+            findNavController().navigate(R.id.action_bottom_map_to_createReportFragment)
+        }
     }
 
 

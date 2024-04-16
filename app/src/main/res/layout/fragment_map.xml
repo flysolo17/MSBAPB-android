@@ -29,18 +29,37 @@
                             android:layout_margin="10dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:textColor="@color/black"
-                            android:text="Locations"/>
-
-                        <androidx.recyclerview.widget.RecyclerView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/recyclerviewLocations"
-                            tools:listitem="@layout/adapter_locations"/>
+                            android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_semibold"
+                                    android:textColor="@color/black"
+                                    style="@style/TextAppearance.Material3.TitleMedium"
+                                    android:text="Locations"/>
+                                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Report an incident"
+                                    style="@style/Widget.Material3.Button.OutlinedButton"
+                                    android:id="@+id/buttonCreateReport"
+                                    app:icon="@drawable/baseline_add_chart_24"
+                                    />
+                        </LinearLayout>
+
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/recyclerviewLocations"
+                                    tools:listitem="@layout/adapter_locations"/>
+
+
+
                 </LinearLayout>
 
         </FrameLayout>
