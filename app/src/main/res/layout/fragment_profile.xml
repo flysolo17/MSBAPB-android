@@ -32,6 +32,7 @@
                 android:layout_height="100dp"
                 android:src="@drawable/profile"
                 android:id="@+id/imageProfile"
+                android:scaleType="centerCrop"
                 android:layout_gravity="center|bottom"
                 app:shapeAppearance="@style/CornerCut"/>
         </FrameLayout>

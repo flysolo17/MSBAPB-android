@@ -12,8 +12,8 @@
         android:title="News" />
     <item
         android:id="@+id/bottom_library"
-        android:icon="@drawable/library"
-        android:title="Library" />
+        android:icon="@drawable/baseline_groups_24"
+        android:title="Personels" />
 
     <item
         android:id="@+id/bottom_logout"

@@ -2,12 +2,15 @@ package com.danica.msbapb.services
 
 import com.danica.msbapb.data.ResponseData
 import com.danica.msbapb.models.User
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Query
 
 interface AuthService {
@@ -55,4 +58,12 @@ interface AuthService {
         @Field("email") email: String,
         @Field("password") password: String
     ): Call<ResponseData<Int>>
+
+    @Multipart
+    @POST("api/auth/upload_profile.php")
+    fun uploadProfile(
+        @Part photo: MultipartBody.Part,
+        @Query("id") id: Int,
+    ) : Call<ResponseData<Any>>
+
 }

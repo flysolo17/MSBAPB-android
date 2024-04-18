@@ -15,6 +15,7 @@ import com.danica.msbapb.utils.UiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import okhttp3.MultipartBody
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -285,6 +286,50 @@ class AuthRepositoryImpl(context: Context, private val  authService: AuthService
                 result.invoke(UiState.FAILED(t.message.toString()))
                 Log.d(TAG,t.toString(),t)
             }
+        })
+    }
+
+    override suspend fun uploadProfile(
+        imageUri: MultipartBody.Part,
+        id : Int,
+        result: (UiState<ResponseData<Any>>) -> Unit
+    ) {
+        result.invoke(UiState.LOADING)
+        authService.uploadProfile(imageUri,id).enqueue(object : retrofit2.Callback<ResponseData<Any>> {
+            override fun onResponse(
+                call: Call<ResponseData<Any>>,
+                response: Response<ResponseData<Any>>
+            ) {
+                if (response.isSuccessful) {
+                    val data : ResponseData<Any> ?= response.body()
+                    Log.d(TAG,data.toString())
+                    data?.let {
+
+                        result.invoke(UiState.SUCCESS(it))
+                        return@let
+                    }
+                    result.invoke(UiState.FAILED(response.message()))
+                } else {
+                    val errorBodyString = response.errorBody()?.string()
+                    errorBodyString?.let {
+                        try {
+                            val errorJson = JSONObject(it)
+                            val errorMessage = errorJson.getString("message")
+                            result.invoke(UiState.FAILED(errorMessage))
+                        } catch (e: JSONException) {
+                            result.invoke(UiState.FAILED("Error parsing error message"))
+                        }
+                    } ?: run {
+                        result.invoke(UiState.FAILED("Unknown error"))
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseData<Any>>, t: Throwable) {
+                result.invoke(UiState.FAILED(t.message.toString()))
+                Log.d(TAG,t.toString(),t)
+            }
+
         })
     }
 

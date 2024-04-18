@@ -6,6 +6,7 @@ import java.util.Date
 import java.util.Locale
 
 const val STORAGE_LINK ="https://danica.msbapb.com/api/uploads"
+const val PROFILE_LINK ="https://danica.msbapb.com/api/profiles"
 
 fun String.formatDate(): String {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
