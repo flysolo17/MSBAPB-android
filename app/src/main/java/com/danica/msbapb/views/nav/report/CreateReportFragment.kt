@@ -33,10 +33,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.danica.msbapb.databinding.FragmentCreateReportBinding
+import com.danica.msbapb.models.LocationsWithDistance
 import com.danica.msbapb.models.User
 import com.danica.msbapb.utils.UiState
 import com.danica.msbapb.viewmodels.AuthViewModel
 import com.danica.msbapb.viewmodels.IncidentReportViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -57,8 +62,22 @@ class CreateReportFragment : Fragment() {
     private val incidentReportViewModel by activityViewModels<IncidentReportViewModel>()
     private val _authViewModel by  activityViewModels<AuthViewModel>()
     private var _user : User ? = null
-
+    private lateinit var _fusedLocationClient: FusedLocationProviderClient
     private var imageUri : Uri ?  = null;
+    private val locationPermissionRequest = this.registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                // Precise location access granted.
+            }
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                // Only approximate location access granted.
+            } else -> {
+            checkPermision()
+        }
+        }
+    }
     private val launcher = registerForActivityResult<PickVisualMediaRequest, Uri>(
         ActivityResultContracts.PickVisualMedia(),
         object : ActivityResultCallback<Uri?> {
@@ -123,6 +142,7 @@ class CreateReportFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         _authViewModel.users.observe(viewLifecycleOwner) {
             if (it is UiState.SUCCESS) {
                 _user = it.data
@@ -160,18 +180,54 @@ class CreateReportFragment : Fragment() {
                 _binding.layoutSeverity.error = "Enter severity"
                 return@setOnClickListener
             }
-            saveReport(_binding.root.context,reporterID, location, description, type, severity, imageUri)
+
+            getCurrentLocation(reporterID,location,description,type,severity,imageUri)
+
         }
 
+    }
+    fun getCurrentLocation(reporterID: Int, location: String, description: String, type: String, severity: Int, imageUri: Uri?) {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        _fusedLocationClient.lastLocation
+            .addOnSuccessListener { locations ->
+                saveReport(_binding.root.context,reporterID, location, description, type, severity, imageUri,locations.latitude,locations.longitude)
+        }
     }
 
     companion object {
 
         const val  IMAGE_SIZE = 224
     }
+    private fun checkPermision() {
+        if (ActivityCompat.checkSelfPermission(
+                _binding.root.context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                _binding.root.context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
 
 
-    private fun saveReport(context: Context, reporterID: Int, location: String, description: String, type: String, severity: Int, imageUri: Uri?) {
+            locationPermissionRequest.launch(arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION))
+            return
+        }
+    }
+
+
+
+    private fun saveReport(context: Context, reporterID: Int, location: String, description: String, type: String, severity: Int, imageUri: Uri?,lat : Double,lang : Double) {
 
         lifecycleScope.launch {
             try {
@@ -188,7 +244,7 @@ class CreateReportFragment : Fragment() {
 
                 if (filePart != null) {
                     incidentReportViewModel.incidentReportRepository.createIncidentReport(
-                        reporterID, location, type, description, severity, filePart
+                        reporterID, location, type, description, severity, filePart,lat,lang
                     ) { result ->
                         when (result) {
                             is UiState.FAILED -> {

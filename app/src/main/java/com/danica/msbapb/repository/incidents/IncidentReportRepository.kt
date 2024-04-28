@@ -17,6 +17,8 @@ interface IncidentReportRepository {
                                      description: String,
                                      severity : Int,
                                      imageUri: MultipartBody.Part,
+                                     latitude : Double,
+                                     longtitude : Double,
                                      result : (UiState<ResponseData<Any>>) -> Unit)
     suspend fun getAllMyReports(uid : Int,result: (UiState<List<IncidentReport>>) -> Unit)
 }

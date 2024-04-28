@@ -23,6 +23,8 @@ interface IncidentReportService {
         @Part("description") description: RequestBody,
         @Part("status") status: Int = 1,
         @Part("severity") severity: Int,
+        @Part("lat") latitude: Double,
+        @Part("lng") longtitude: Double,
         @Part photo: MultipartBody.Part
     ): Call<ResponseData<Any>>
 
