@@ -20,11 +20,13 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.danica.msbapb.MainActivity
 
 import com.danica.msbapb.R
 import com.danica.msbapb.databinding.FragmentMapBinding
@@ -101,10 +103,13 @@ class MapFragment : Fragment() ,LocationAdapterClickListener{
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
         _binding.imgLogoBFP.setOnClickListener {
-            sendCallIntent("963187114")
+            callNow("963187114")
+            //sendCallIntent("963187114")
         }
         _binding.imgLogoPNP.setOnClickListener {
-            sendCallIntent("9665365254")
+
+            callNow("9665365254")
+            //    sendCallIntent("9665365254")
         }
 
 
@@ -305,6 +310,7 @@ class MapFragment : Fragment() ,LocationAdapterClickListener{
 
     companion object {
         private const val DEFAULT_ZOOM = 15
+        const val REQUEST_CALL_PHONE_PERMISSION = 122
     }
 
     private fun isLocationServiceEnabled() : Boolean {
@@ -342,5 +348,27 @@ class MapFragment : Fragment() ,LocationAdapterClickListener{
         }
 
     }
+
+
+    private fun callNow(data: String) {
+        // Check if the CALL_PHONE permission has been granted
+        if (ContextCompat.checkSelfPermission(_binding.root.context, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+            // Create an intent to make a call using the ACTION_CALL action
+            val intent = Intent(Intent.ACTION_CALL)
+            intent.data = Uri.parse("tel:$data")
+
+            // Start the activity to make the call
+            startActivity(intent)
+        } else {
+            // If the permission is not granted, you can handle it accordingly
+            // For example, you may want to request the permission or show a message to the user
+            requestPermission(Manifest.permission.CALL_PHONE, REQUEST_CALL_PHONE_PERMISSION)
+        }
+    }
+
+    private fun requestPermission(permission: String, requestCode: Int) {
+        ActivityCompat.requestPermissions(requireActivity(), arrayOf(permission), requestCode)
+    }
+
 
 }
