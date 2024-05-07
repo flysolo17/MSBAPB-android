@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.location.Geocoder
 import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Build
@@ -53,10 +54,12 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 
 private val incidentTypes = arrayOf("Accident", "Fire", "Robbery", "Medical Emergency", "Natural Disaster","Other")
 private val incidentSeverity= arrayOf("LOW", "MEDIUM", "HIGH")
+
 class CreateReportFragment : Fragment() {
     private lateinit var _binding : FragmentCreateReportBinding
     private val incidentReportViewModel by activityViewModels<IncidentReportViewModel>()
@@ -64,6 +67,7 @@ class CreateReportFragment : Fragment() {
     private var _user : User ? = null
     private lateinit var _fusedLocationClient: FusedLocationProviderClient
     private var imageUri : Uri ?  = null;
+    private var _lngLng : LatLng ? = null;
     private val locationPermissionRequest = this.registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
@@ -155,9 +159,7 @@ class CreateReportFragment : Fragment() {
         _binding.captureImage.setOnClickListener {
             launchCamera(_binding.root.context)
         }
-
-
-
+        lastLocation()
         _binding.buttonSaveReport.setOnClickListener {
             val reporterID = _user?.id ?: 0
             val location = _binding.inputLocation.text.toString()
@@ -181,12 +183,19 @@ class CreateReportFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            getCurrentLocation(reporterID,location,description,type,severity,imageUri)
+            if (_lngLng ==null) {
+                Toast.makeText(_binding.root.context,"No Location",Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            } else {
+                saveReport(_binding.root.context,reporterID, location, description, type, severity, imageUri,_lngLng!!.latitude,_lngLng!!.longitude)
+            }
+
 
         }
 
+
     }
-    fun getCurrentLocation(reporterID: Int, location: String, description: String, type: String, severity: Int, imageUri: Uri?) {
+    private fun lastLocation() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -199,9 +208,29 @@ class CreateReportFragment : Fragment() {
         }
         _fusedLocationClient.lastLocation
             .addOnSuccessListener { locations ->
-                saveReport(_binding.root.context,reporterID, location, description, type, severity, imageUri,locations.latitude,locations.longitude)
+               locations?.let {
+                 _lngLng=  getLocationInfo(it.latitude,it.longitude)
+               }
+
         }
     }
+    private fun getLocationInfo(latitude : Double ,longitude : Double) : LatLng  {
+        val geocoder = Geocoder(_binding.root.context, Locale.getDefault())
+        val addresses = geocoder.getFromLocation(latitude,longitude,1)
+        val firstAddress  = addresses?.get(0);
+        val result = StringBuilder();
+        firstAddress?.let {
+            result.append(it.adminArea)
+            result.append(it.subAdminArea)
+            result.append(it.locality)
+            result.append(it.featureName)
+            _binding.inputLocation.setText(firstAddress.getAddressLine(0))
+        }
+        return  LatLng(firstAddress?.latitude ?: 0.0,firstAddress?.longitude ?: 0.0)
+    }
+
+
+
 
     companion object {
 

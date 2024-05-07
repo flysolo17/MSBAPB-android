@@ -100,7 +100,12 @@ class MapFragment : Fragment() ,LocationAdapterClickListener{
             adapter = _locationsAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
-
+        _binding.imgLogoBFP.setOnClickListener {
+            sendCallIntent("963187114")
+        }
+        _binding.imgLogoPNP.setOnClickListener {
+            sendCallIntent("9665365254")
+        }
 
 
         observers()

@@ -29,6 +29,30 @@
                             android:layout_margin="10dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            style="@style/TextAppearance.Material3.TitleMedium"
+                            android:text="Emergency Contacts"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:gravity="center">
+                                <ImageView
+                                    android:layout_width="100dp"
+                                    android:layout_height="100dp"
+                                    android:id="@+id/imgLogoBFP"
+                                    android:layout_marginHorizontal="2dp"
+                                    android:src="@drawable/logobfp"/>
+                                <ImageView
+                                    android:layout_marginHorizontal="2dp"
+                                    android:layout_width="100dp"
+                                    android:layout_height="100dp"
+                                    android:id="@+id/imgLogoPNP"
+                                    android:src="@drawable/logopnp"/>
+                        </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
